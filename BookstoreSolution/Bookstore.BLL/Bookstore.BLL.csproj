@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Bookstore.Common\Bookstore.Common.csproj" />
+    <ProjectReference Include="..\Bookstore.DAL\Bookstore.DAL.csproj" />
+    <ProjectReference Include="..\Bookstore.Models\Bookstore.Models.csproj" />
+  </ItemGroup>
+
+</Project>

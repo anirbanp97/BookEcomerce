@@ -1,0 +1,52 @@
+﻿@model Bookstore.Web.ViewModels.CartViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Checkout</h2>
+
+@if (Model == null || !Model.Items.Any())
+{
+    <div class="alert alert-info">Your cart is empty.</div>
+}
+else
+{
+    <div class="card p-4 shadow-sm">
+        <h5 class="mb-3">Confirm Your Order</h5>
+
+        <table class="table table-bordered">
+            <thead class="table-dark">
+                <tr>
+                    <th>Book</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Quantity</td>
+                        <td>₹@item.UnitPrice</td>
+                        <td>₹@item.LineTotal</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h4 class="text-end">Grand Total: ₹@Model.TotalAmount</h4>
+
+        <form method="get" action="/Order/PlaceOrder">
+            <input type="hidden" name="userId" value="@Model.UserId" />
+            <div class="mb-3">
+                <label>Shipping Address</label>
+                <input type="text" name="shippingAddress" class="form-control" placeholder="Enter your address" required />
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Place Order</button>
+        </form>
+    </div>
+}
