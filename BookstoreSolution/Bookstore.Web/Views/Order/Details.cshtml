@@ -1,21 +1,23 @@
-﻿@model Bookstore.Web.ViewModels.OrderViewModel
-
+﻿
+@model Bookstore.Web.ViewModels.OrderViewModel
 @{
     ViewData["Title"] = "Order Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2 class="mb-4">Order #@Model.OrderId</h2>
+<h2>Order #@Model.OrderId</h2>
 <p><strong>Date:</strong> @Model.OrderDate.ToString("dd MMM yyyy")</p>
 <p><strong>Status:</strong> @Model.Status</p>
-<p><strong>Address:</strong> @Model.ShippingAddress</p>
+<p><strong>Shipping:</strong> @Model.ShippingAddress</p>
+<p><strong>Total:</strong> ₹@Model.TotalAmount</p>
 
+<h4>Items</h4>
 <table class="table table-bordered">
     <thead class="table-dark">
         <tr>
             <th>Book</th>
-            <th>Quantity</th>
-            <th>Price</th>
+            <th>Qty</th>
+            <th>Unit Price</th>
             <th>Total</th>
         </tr>
     </thead>
@@ -26,10 +28,10 @@
                 <td>@item.Title</td>
                 <td>@item.Quantity</td>
                 <td>₹@item.UnitPrice</td>
-                <td>₹@item.LineTotal</td>
+                <td>₹@(item.UnitPrice* item.Quantity)</td>
             </tr>
         }
     </tbody>
 </table>
 
-<h4 class="text-end mt-3">Grand Total: ₹@Model.TotalAmount</h4>
+<a href="/Order/MyOrders" class="btn btn-secondary">Back to Orders</a>

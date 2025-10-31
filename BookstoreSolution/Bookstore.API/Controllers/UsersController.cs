@@ -27,6 +27,7 @@ namespace Bookstore.API.Controllers
                 Email = model.Email
             };
 
+
             var userId = _userService.RegisterUser(user, model.Password);
             return Ok(ApiResponse<int>.Ok(userId, "User registered successfully."));
         }

@@ -18,19 +18,43 @@ namespace Bookstore.API.Controllers
             _orderService = orderService;
         }
 
+        //[HttpPost("place")]
+        //public IActionResult PlaceOrder([FromQuery] int userId, [FromBody] OrderDto dto)
+        //{
+        //    var orderItems = dto.Items.Select(i => new OrderItem
+        //    {
+        //        BookId = i.BookId,
+        //        Quantity = i.Quantity,
+        //        UnitPrice = i.UnitPrice
+        //    }).ToList();
+
+        //    var orderId = _orderService.PlaceOrder(userId, dto.ShippingAddress ?? "", orderItems);
+        //    return Ok(ApiResponse<int>.Ok(orderId, "Order placed successfully."));
+        //}
         [HttpPost("place")]
         public IActionResult PlaceOrder([FromQuery] int userId, [FromBody] OrderDto dto)
         {
-            var orderItems = dto.Items.Select(i => new OrderItem
-            {
-                BookId = i.BookId,
-                Quantity = i.Quantity,
-                UnitPrice = i.UnitPrice
-            }).ToList();
+            if (dto == null || dto.Items == null || !dto.Items.Any())
+                return BadRequest("Order must have at least one item.");
 
-            var orderId = _orderService.PlaceOrder(userId, dto.ShippingAddress ?? "", orderItems);
-            return Ok(ApiResponse<int>.Ok(orderId, "Order placed successfully."));
+            try
+            {
+                var orderItems = dto.Items.Select(i => new Bookstore.Models.OrderItem
+                {
+                    BookId = i.BookId,
+                    Quantity = i.Quantity,
+                    UnitPrice = i.UnitPrice
+                }).ToList();
+
+                var orderId = _orderService.PlaceOrder(userId, dto.ShippingAddress, orderItems);
+                return Ok(new { Success = true, OrderId = orderId });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Success = false, Message = ex.Message });
+            }
         }
+
 
         [HttpGet("user/{userId}")]
         public IActionResult GetOrdersByUser(int userId)
